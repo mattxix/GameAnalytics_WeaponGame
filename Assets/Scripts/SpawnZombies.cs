@@ -23,8 +23,8 @@ public class SpawnZombies : MonoBehaviour
             GameObject newZombie = Instantiate(expoZombiePrefab, spawnPoint.position, spawnPoint.rotation);
 
             EnemyHealth respawnScript = newZombie.GetComponent<EnemyHealth>();
-            if (respawnScript != null)
-                respawnScript.spawner = this;
+            //if (respawnScript != null)
+               // respawnScript.spawner = this;
 
             PatrolEnemy ai = newZombie.GetComponent<PatrolEnemy>();
             if (ai != null)
@@ -59,8 +59,8 @@ public class SpawnZombies : MonoBehaviour
             GameObject newZombie = Instantiate(zombiePrefab, spawnPoint.position, spawnPoint.rotation);
 
             EnemyHealth respawnScript = newZombie.GetComponent<EnemyHealth>();
-            if (respawnScript != null)
-                respawnScript.spawner = this;
+            //if (respawnScript != null)
+               // respawnScript.spawner = this;
 
             PatrolEnemy ai = newZombie.GetComponent<PatrolEnemy>();
             if (ai != null)

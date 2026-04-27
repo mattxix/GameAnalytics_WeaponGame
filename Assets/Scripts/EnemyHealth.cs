@@ -8,7 +8,7 @@ public class EnemyHealth : MonoBehaviour
     public float enemyHealth = 100;
     public float currentHealth;
     public GameObject healthBarParent;
-    public SpawnZombies spawner;
+    public SpawnEnemy spawner;
     public AudioClip zombieHitClip;
 
     void Start()
@@ -50,18 +50,11 @@ public class EnemyHealth : MonoBehaviour
 
             
         }
-        
 
+        spawner.SpawnZombie();
         Destroy(healthBarParent);
         Destroy(gameObject);
 
-        int chanceForMore = Random.Range(0, 2);
-        if (spawner != null)
-        {
-            spawner.SpawnZombie(); 
-            if (chanceForMore == 0)
-                spawner.SpawnZombie(); 
-            spawner.upCount();
-        }
+        
     }
 }

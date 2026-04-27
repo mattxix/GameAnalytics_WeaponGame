@@ -26,7 +26,7 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
             //Player Dies
-            SceneManager.LoadScene(3);
+            SceneManager.LoadScene(0);
         }
     }
 
@@ -40,7 +40,7 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
             //Player Dies
-            SceneManager.LoadScene(3);
+            SceneManager.LoadScene(0);
         }
 
     }
