@@ -18,25 +18,26 @@ public class SpawnEnemy : MonoBehaviour
     {
         int randomIndex = Random.Range(0, spawnLocations.Length);
         int randomWeapon = Random.Range(0, Weapons.Length);
-
-
         Transform spawnPoint = spawnLocations[randomIndex];
-        
-            GameObject newZombie = Instantiate(zombiePrefab, spawnPoint.position, spawnPoint.rotation);
 
-        
+        GameObject newZombie = Instantiate(zombiePrefab, spawnPoint.position, spawnPoint.rotation);
+
         EnemyHealth respawnScript = newZombie.GetComponent<EnemyHealth>();
         if (respawnScript != null)
             respawnScript.spawner = this;
 
         PatrolEnemy ai = newZombie.GetComponent<PatrolEnemy>();
-            if (ai != null)
-                ai.target = player;
+        if (ai != null)
+            ai.target = player;
 
-        Weapons[randomWeapon].transform.SetParent(newZombie.transform);
-        Weapons[randomWeapon].transform.localPosition = Vector3.zero;
-        Weapons[randomWeapon].transform.localRotation = Quaternion.identity;
-       
+        // Instantiate a copy of the weapon instead of moving the original
+        
+        GameObject weaponInstance = Instantiate(Weapons[randomWeapon], newZombie.transform);
+        Transform holdPoint = newZombie.transform.Find("WeaponHoldPoint");
+        if (holdPoint != null)
+        {
+            Debug.Log("ts aint working");
+        }
     }
 
 }

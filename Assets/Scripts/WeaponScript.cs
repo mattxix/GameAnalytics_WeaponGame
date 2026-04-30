@@ -12,8 +12,8 @@ public class WeaponScript : MonoBehaviour
     public float nextFire = 0.0f;
     public Camera fpsCamera;
     public Animator anim;
-    public AudioSource audioSource; 
-    public AudioClip gunFireClip;
+    //public AudioSource audioSource; 
+   // public AudioClip gunFireClip;
 
     [Header("Scope")]
     public Camera playerCam;
@@ -35,10 +35,14 @@ public class WeaponScript : MonoBehaviour
     {
         float targetFOV = isAiming ? aimFOV : normalFOV;
         playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, targetFOV, Time.deltaTime * fovSpeed);
+        
+            
     }
     public void Shoot()
     {
-        audioSource.PlayOneShot(gunFireClip);
+        //audioSource.PlayOneShot(gunFireClip);
+        anim.ResetTrigger("Shoot");
+        anim.SetTrigger("Shoot");
         RaycastHit hit;
         if (Physics.Raycast(fpsCamera.transform.position, transform.forward, out hit, weaponRange,
             Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
@@ -53,16 +57,16 @@ public class WeaponScript : MonoBehaviour
         
     }
 
-    public void FireShot(InputAction.CallbackContext ctx)
-    {
-        if(ctx.performed && Time.time >= nextFire)
-        {
-            nextFire = Time.time + 1.0f / fireRate;
-            anim.SetTrigger("Shoot");
-            StartCoroutine(Recoil());
-            Shoot();
-        }
-    }
+    //public void FireShot(InputAction.CallbackContext ctx)
+    //{
+    //    if(ctx.performed && Time.time >= nextFire)
+    //    {
+    //        nextFire = Time.time + 1.0f / fireRate;
+    //        anim.SetTrigger("Shoot");
+    //        //StartCoroutine(Recoil());
+    //        Shoot();
+    //    }
+    //}
 
     public void AimIn(InputAction.CallbackContext ctx)
     {
@@ -78,28 +82,63 @@ public class WeaponScript : MonoBehaviour
         }
     }
 
-    
+    private Coroutine _fireCoroutine;
 
-    IEnumerator Recoil()
+    public void FireShot(InputAction.CallbackContext ctx)
     {
-        reloadBar.fillAmount = 0f; 
-        while (reloadBar.fillAmount < 1f)
+        if (!gameObject.activeInHierarchy) return;
+        if (ctx.performed)
+            _fireCoroutine = StartCoroutine(AutoFire());
+        else if (ctx.canceled)
+            StopFireCoroutine();
+    }
+
+    private IEnumerator AutoFire()
+    {
+        while (true)
         {
-            reloadBar.fillAmount += Time.deltaTime * fillSpeed;
-            reloadBar.fillAmount = Mathf.Clamp01(reloadBar.fillAmount);
+            if (Time.time >= nextFire)
+            {
+                nextFire = Time.time + 1.0f / fireRate;
+                
+                Shoot();
+            }
             yield return null;
-            
         }
-        anim.SetTrigger("Shoot");
-
-
-
-
-
     }
 
 
-    
+    public void StopFireCoroutine()
+    {
+        if (_fireCoroutine != null)
+        {
+            StopCoroutine(_fireCoroutine);
+            _fireCoroutine = null;
+        }
+    }
+
+
+
+    //IEnumerator Recoil()
+    //{
+    //    reloadBar.fillAmount = 0f; 
+    //    while (reloadBar.fillAmount < 1f)
+    //    {
+    //        reloadBar.fillAmount += Time.deltaTime * fillSpeed;
+    //        reloadBar.fillAmount = Mathf.Clamp01(reloadBar.fillAmount);
+    //        yield return null;
+
+    //    }
+    //    anim.SetTrigger("Shoot");
+
+
+
+
+
+    //}
+
+
+
 
 
 }

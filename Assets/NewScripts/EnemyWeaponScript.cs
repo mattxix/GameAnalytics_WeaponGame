@@ -13,7 +13,7 @@ public class EnemyWeaponScript : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip gunFireClip;
 
-    public GameObject fireIcon;
+    //public GameObject fireIcon;
     public GameObject fakeRaycast;
 
  
@@ -27,7 +27,7 @@ public class EnemyWeaponScript : MonoBehaviour
     void Start()
     {
         StartCoroutine(RepeatEveryTwoSeconds());
-        fireIcon.SetActive(false);
+        //fireIcon.SetActive(false);
     }
     private void Update()
     {
@@ -38,12 +38,16 @@ public class EnemyWeaponScript : MonoBehaviour
     {
         while (true)
         {
-            FireShot();
-            fireIcon.SetActive(true);
-            yield return new WaitForSeconds(.5f);
-            fireIcon.SetActive(false);
-            yield return new WaitForSeconds(1.5f);
-            
+            // Fire for 1 second
+            float fireEndTime = Time.time + 1f;
+            while (Time.time < fireEndTime)
+            {
+                FireShot();
+                yield return null;
+            }
+
+            // Wait 1 second
+            yield return new WaitForSeconds(1f);
         }
     }
 
